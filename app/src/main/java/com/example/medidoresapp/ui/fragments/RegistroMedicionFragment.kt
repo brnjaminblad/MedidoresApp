@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 /**
- * Fragmento para registrar o editar una medición con formato de fecha DD-MM-YYYY.
+ * Esta pantalla sirve tanto para anotar una nueva medición como para corregir una vieja.
  */
 class RegistroMedicionFragment : Fragment() {
 
@@ -36,6 +36,7 @@ class RegistroMedicionFragment : Fragment() {
         MedicionViewModelFactory(repository)
     }
 
+    // Si este ID es 0, es una nueva. Si no, estamos editando una existente.
     private var medicionId: Int = 0
 
     override fun onCreateView(
@@ -49,22 +50,29 @@ class RegistroMedicionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Miramos si nos pasaron un ID para editar
         medicionId = arguments?.getInt("medicionId") ?: 0
 
         if (medicionId != 0) {
+            // Si hay ID, buscamos los datos viejos para rellenar los campos
             cargarDatosMedicion(medicionId)
             binding.btnGuardar.text = getString(R.string.btn_actualizar)
         }
 
+        // Al tocar el campo de fecha, abrimos el calendario
         binding.etFecha.setOnClickListener {
             mostrarDatePicker()
         }
 
+        // Al tocar guardar, validamos y mandamos los datos al ViewModel
         binding.btnGuardar.setOnClickListener {
             guardarMedicion()
         }
     }
 
+    /**
+     * Busca los datos de una medición guardada y los pone en los campos de texto.
+     */
     private fun cargarDatosMedicion(id: Int) {
         lifecycleScope.launch {
             val database = AppDatabase.getDatabase(requireContext())
@@ -74,6 +82,7 @@ class RegistroMedicionFragment : Fragment() {
             medicion?.let {
                 binding.etLectura.setText(it.lectura.toString())
                 binding.etFecha.setText(it.fecha)
+                // Marcamos el botón de Agua, Luz o Gas según corresponda
                 when (it.tipoServicio) {
                     "Agua" -> binding.toggleGroupServicio.check(R.id.btnAgua)
                     "Luz" -> binding.toggleGroupServicio.check(R.id.btnLuz)
@@ -83,6 +92,9 @@ class RegistroMedicionFragment : Fragment() {
         }
     }
 
+    /**
+     * Muestra el calendario de Android para elegir una fecha cómodamente.
+     */
     private fun mostrarDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -92,7 +104,7 @@ class RegistroMedicionFragment : Fragment() {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, selectedYear, selectedMonth, selectedDay ->
-                // Formato DD-MM-YYYY con ceros a la izquierda
+                // Guardamos la fecha con formato lindo: DD-MM-YYYY
                 val fechaFormatted = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
                 binding.etFecha.setText(fechaFormatted)
             },
@@ -101,28 +113,33 @@ class RegistroMedicionFragment : Fragment() {
         datePickerDialog.show()
     }
 
+    /**
+     * Revisa que todo esté bien escrito antes de guardar.
+     */
     private fun guardarMedicion() {
         val lecturaStr = binding.etLectura.text.toString()
         val fecha = binding.etFecha.text.toString()
         val checkedButtonId = binding.toggleGroupServicio.checkedButtonId
 
+        // Validaciones básicas para no guardar datos vacíos
         if (checkedButtonId == View.NO_ID) {
-            Toast.makeText(requireContext(), "Seleccione Agua, Luz o Gas", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Por favor, selecciona qué medidor es", Toast.LENGTH_SHORT).show()
             return
         }
 
         if (lecturaStr.isEmpty()) {
-            binding.tilLectura.error = getString(R.string.error_campo_obligatorio)
+            binding.tilLectura.error = "Escribe el valor del medidor"
             return
         }
         binding.tilLectura.error = null
 
         if (fecha.isEmpty()) {
-            binding.tilFecha.error = getString(R.string.error_campo_obligatorio)
+            binding.tilFecha.error = "Selecciona una fecha"
             return
         }
         binding.tilFecha.error = null
 
+        // Identificamos el tipo de servicio seleccionado
         val tipoServicio = when (checkedButtonId) {
             R.id.btnAgua -> "Agua"
             R.id.btnLuz -> "Luz"
@@ -130,6 +147,7 @@ class RegistroMedicionFragment : Fragment() {
             else -> "Agua"
         }
 
+        // Creamos el objeto con la información
         val medicion = Medicion(
             id = medicionId,
             tipoServicio = tipoServicio,
@@ -137,6 +155,7 @@ class RegistroMedicionFragment : Fragment() {
             fecha = fecha
         )
 
+        // Le pedimos al ViewModel que lo guarde y volvemos atrás
         viewModel.guardarMedicion(medicion)
         findNavController().popBackStack()
     }

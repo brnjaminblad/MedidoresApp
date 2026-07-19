@@ -25,13 +25,14 @@ import com.example.medidoresapp.viewmodel.MedicionViewModel
 import com.example.medidoresapp.viewmodel.MedicionViewModelFactory
 
 /**
- * Fragmento que muestra el listado de mediciones con opciones de editar, eliminar y ordenar.
+ * Esta pantalla muestra la lista de todas las mediciones que hemos registrado.
  */
 class ListaMedicionesFragment : Fragment() {
 
     private var _binding: FragmentListaMedicionesBinding? = null
     private val binding get() = _binding!!
 
+    // Inicializamos el ViewModel con su fábrica para que tenga acceso al repositorio
     private val viewModel: MedicionViewModel by viewModels {
         val database = AppDatabase.getDatabase(requireContext())
         val repository = MedicionRepository(database.medicionDao())
@@ -51,10 +52,11 @@ class ListaMedicionesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configurarMenu()
-        configurarRecyclerView()
-        observarDatos()
+        configurarMenu()        // Preparamos el botón de ordenar
+        configurarRecyclerView() // Preparamos la lista visual
+        observarDatos()         // Nos ponemos a escuchar cambios en los datos
 
+        // Configuramos el botón flotante (+) para ir a registrar una nueva
         binding.btnNueva.setOnClickListener {
             val bundle = Bundle().apply { putInt("medicionId", 0) }
             findNavController().navigate(R.id.action_listaMedicionesFragment_to_registroMedicionFragment, bundle)
@@ -62,16 +64,18 @@ class ListaMedicionesFragment : Fragment() {
     }
 
     /**
-     * Configura el menú de la Toolbar para añadir la opción de ordenar.
+     * Aquí configuramos el menú de la parte superior (el icono de ordenar).
      */
     private fun configurarMenu() {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Inflamos el archivo XML que contiene las opciones de ordenamiento
                 menuInflater.inflate(R.menu.menu_lista, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Según lo que el usuario toque en el submenú, avisamos al ViewModel
                 return when (menuItem.itemId) {
                     R.id.sort_date_desc -> {
                         viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.DATE_DESC)
@@ -99,13 +103,18 @@ class ListaMedicionesFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    /**
+     * Configuramos cómo se va a ver la lista y qué pasa si tocamos un ítem.
+     */
     private fun configurarRecyclerView() {
         adapter = MedicionAdapter(
             onEdit = { medicion ->
+                // Si tocamos editar, vamos a la pantalla de registro pasando el ID
                 val bundle = Bundle().apply { putInt("medicionId", medicion.id) }
                 findNavController().navigate(R.id.action_listaMedicionesFragment_to_registroMedicionFragment, bundle)
             },
             onDelete = { medicion ->
+                // Si tocamos eliminar, mostramos un aviso de confirmación
                 confirmarEliminacion(medicion)
             }
         )
@@ -115,6 +124,9 @@ class ListaMedicionesFragment : Fragment() {
         }
     }
 
+    /**
+     * Muestra un cartelito para asegurar que el usuario realmente quiere borrar el dato.
+     */
     private fun confirmarEliminacion(medicion: com.example.medidoresapp.data.entity.Medicion) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.opcion_eliminar)
@@ -127,6 +139,9 @@ class ListaMedicionesFragment : Fragment() {
             .show()
     }
 
+    /**
+     * Este método se encarga de que la lista se actualice solita cuando cambian los datos.
+     */
     private fun observarDatos() {
         viewModel.mediciones.observe(viewLifecycleOwner) { lista ->
             adapter.actualizarLista(lista)
@@ -135,6 +150,7 @@ class ListaMedicionesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Cada vez que volvemos a esta pantalla, refrescamos los datos por si acaso
         viewModel.obtenerMediciones()
     }
 

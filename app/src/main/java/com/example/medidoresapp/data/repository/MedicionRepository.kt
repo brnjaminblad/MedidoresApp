@@ -3,27 +3,24 @@ package com.example.medidoresapp.data.repository
 import com.example.medidoresapp.data.dao.MedicionDao
 import com.example.medidoresapp.data.entity.Medicion
 
-class MedicionRepository(
-    private val medicionDao: MedicionDao
-) {
+/**
+ * El Repositorio es como el "mensajero" entre el código de la app y la base de datos.
+ * Su trabajo es simplemente pedir o guardar los datos que necesitamos.
+ */
+class MedicionRepository(private val medicionDao: MedicionDao) {
 
-    suspend fun insertarMedicion(medicion: Medicion) {
-        medicionDao.insertarMedicion(medicion)
-    }
+    // Trae todas las mediciones que tenemos guardadas
+    suspend fun obtenerTodasLasMediciones() = medicionDao.obtenerTodasLasMediciones()
 
-    suspend fun actualizarMedicion(medicion: Medicion) {
-        medicionDao.actualizarMedicion(medicion)
-    }
+    // Busca una medición específica si sabemos su ID
+    suspend fun obtenerMedicionPorId(id: Int) = medicionDao.obtenerMedicionPorId(id)
 
-    suspend fun eliminarMedicion(medicion: Medicion) {
-        medicionDao.eliminarMedicion(medicion)
-    }
+    // Guarda una nueva medición
+    suspend fun insertarMedicion(medicion: Medicion) = medicionDao.insertarMedicion(medicion)
 
-    suspend fun obtenerTodasLasMediciones(): List<Medicion> {
-        return medicionDao.obtenerTodasLasMediciones()
-    }
+    // Actualiza los datos de una medición que ya existía
+    suspend fun actualizarMedicion(medicion: Medicion) = medicionDao.actualizarMedicion(medicion)
 
-    suspend fun obtenerMedicionPorId(id: Int): Medicion? {
-        return medicionDao.obtenerMedicionPorId(id)
-    }
+    // Borra una medición de la lista
+    suspend fun eliminarMedicion(medicion: Medicion) = medicionDao.eliminarMedicion(medicion)
 }
