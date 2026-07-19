@@ -8,9 +8,12 @@
     <string name="msg_confirmar_eliminar">¿Estás seguro de que deseas eliminar esta medición?</string>
     <string name="opcion_editar">Editar</string>
     <string name="opcion_eliminar">Eliminar</string>
-    <string name="opcion_ordenar">Ordenar por fecha</string>
-    <string name="orden_recientes">Más recientes primero</string>
-    <string name="orden_antiguos">Más antiguos primero</string>
+    <string name="opcion_ordenar">Ordenar por</string>
+    <string name="orden_recientes">Fecha: Recientes primero</string>
+    <string name="orden_antiguos">Fecha: Antiguos primero</string>
+    <string name="orden_lectura_mayor">Lectura: Mayor a menor</string>
+    <string name="orden_lectura_menor">Lectura: Menor a mayor</string>
+    <string name="orden_tipo">Tipo de servicio (Agua, Luz, Gas)</string>
     <string name="label_medidor_de">Medidor de:</string>
     <string name="opcion_agua">Agua</string>
     <string name="opcion_luz">Luz</string>

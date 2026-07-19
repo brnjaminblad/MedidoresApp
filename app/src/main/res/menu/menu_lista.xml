@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/opcion_ordenar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/sort_date_desc"
+                android:title="@string/orden_recientes" />
+            <item
+                android:id="@+id/sort_date_asc"
+                android:title="@string/orden_antiguos" />
+            <item
+                android:id="@+id/sort_value_desc"
+                android:title="@string/orden_lectura_mayor" />
+            <item
+                android:id="@+id/sort_value_asc"
+                android:title="@string/orden_lectura_menor" />
+            <item
+                android:id="@+id/sort_type"
+                android:title="@string/orden_tipo" />
+        </menu>
+    </item>
+
 </menu>

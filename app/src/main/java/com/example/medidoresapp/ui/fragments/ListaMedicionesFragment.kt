@@ -73,9 +73,24 @@ class ListaMedicionesFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_sort -> {
-                        viewModel.alternarOrden()
-                        Toast.makeText(requireContext(), "Orden de fechas cambiado", Toast.LENGTH_SHORT).show()
+                    R.id.sort_date_desc -> {
+                        viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.DATE_DESC)
+                        true
+                    }
+                    R.id.sort_date_asc -> {
+                        viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.DATE_ASC)
+                        true
+                    }
+                    R.id.sort_value_desc -> {
+                        viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.VALUE_DESC)
+                        true
+                    }
+                    R.id.sort_value_asc -> {
+                        viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.VALUE_ASC)
+                        true
+                    }
+                    R.id.sort_type -> {
+                        viewModel.setSortType(com.example.medidoresapp.viewmodel.SortType.SERVICE_TYPE)
                         true
                     }
                     else -> false
