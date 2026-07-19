@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_margin="8dp"
+
+    app:cardCornerRadius="12dp">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:padding="16dp"
+
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/txtServicio"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:text="Agua"
+
+            android:textSize="18sp"
+
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:id="@+id/txtLectura"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:text="Lectura: 100"/>
+
+
+        <TextView
+            android:id="@+id/txtFecha"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:text="Fecha: 19/07/2026"/>
+
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
