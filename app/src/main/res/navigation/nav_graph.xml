@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listaMedicionesFragment">
+
+    <fragment
+        android:id="@+id/listaMedicionesFragment"
+        android:name="com.example.medidoresapp.ui.fragments.ListaMedicionesFragment"
+        android:label="@string/title_listado"
+        tools:layout="@layout/fragment_lista_mediciones">
+        <action
+            android:id="@+id/action_listaMedicionesFragment_to_registroMedicionFragment"
+            app:destination="@id/registroMedicionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registroMedicionFragment"
+        android:name="com.example.medidoresapp.ui.fragments.RegistroMedicionFragment"
+        android:label="@string/title_registro"
+        tools:layout="@layout/fragment_registro_medicion">
+        <argument
+            android:name="medicionId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>

@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">MedidoresApp</string>
+    <string name="app_name">Medidores App</string>
+    <string name="title_listado">Mediciones Registradas</string>
+    <string name="title_registro">Registro de Medición</string>
+    <string name="btn_nueva_medicion">Nueva medición</string>
+    <string name="btn_registrar">Registrar medición</string>
+    <string name="btn_actualizar">Actualizar medición</string>
+    <string name="msg_confirmar_eliminar">¿Estás seguro de que deseas eliminar esta medición?</string>
+    <string name="opcion_editar">Editar</string>
+    <string name="opcion_eliminar">Eliminar</string>
+    <string name="opcion_ordenar">Ordenar por fecha</string>
+    <string name="orden_recientes">Más recientes primero</string>
+    <string name="orden_antiguos">Más antiguos primero</string>
+    <string name="label_medidor_de">Medidor de:</string>
+    <string name="opcion_agua">Agua</string>
+    <string name="opcion_luz">Luz</string>
+    <string name="opcion_gas">Gas</string>
+    <string name="label_lectura">Lectura</string>
+    <string name="label_fecha">Fecha</string>
+    <string name="hint_lectura">Valor del medidor</string>
+    <string name="error_campo_obligatorio">Este campo es obligatorio</string>
+    <string name="txt_lectura_item">Lectura: %s</string>
+    <string name="txt_fecha_item">Fecha: %s</string>
 </resources>
